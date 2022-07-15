@@ -1,0 +1,1 @@
+psql -U local -h localhost -d local -f sql/init_db.sql
