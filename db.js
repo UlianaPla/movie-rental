@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 
 async function exec() {
-    const sequelize = new Sequelize('postgres://local:local@localhost:5432/local')
+    const sequelize = new Sequelize('postgres://ulia_4d91:pa55w0rd@localhost:5432/movie_rental')
 
     try {
         await sequelize.authenticate();
