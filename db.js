@@ -37,7 +37,7 @@ async function exec() {
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     } finally {
-        await sequelize.close()
+        await sequelize.close();
     }
 }
 

@@ -1,42 +1,31 @@
-const express = require('express');
-const { Sequelize, DataTypes } = require('sequelize');
-const router = express.Router();
+const { models } = require('../sequelize');
 
+async function getTen(req, res) {
+	const films = await models.film.findAll({ raw: true});
+	res.status(200).json(films.slice(0, 10));
+};
 
-router.get('/', function(req, res, next) {
-  getFilms().then((data) => {
-    res.send(data);
-  });
-});
-
-async function getFilms() {
-  const sequelize = new Sequelize('postgres://ulia_4d91:pa55w0rd@localhost:5432/movie_rental')
-
-  try {
-      await sequelize.authenticate();
-      console.log('Connection has been established successfully.');
-
-      const Film = sequelize.define('film',{
-          code: { type: DataTypes.CHAR, primaryKey: true },
-          title: { type: DataTypes.TEXT },
-          did: { type: DataTypes.INTEGER },
-          date_prod: { type: DataTypes.DATE },
-          kind: { type: DataTypes.TEXT },
-          len: { type: DataTypes.TIME }
-      }, 
-      { createdAt: false, updatedAt: false });
-
-      const films = await Film.findAll({ raw: true});
-      const res = films.slice(0, 10);
-      
-      console.log(res);
-      return res;
-  } catch (error) {
-      console.error('Unable to connect to the database:', error);
-  } finally {
-      await sequelize.close();
-  }
+async function getById(req, res) {
+  res.send('getById');
 }
 
-module.exports = router;
+async function create(req, res) {
+  res.send('create');
+}
+
+async function update(req, res) {
+  res.send('update');
+}
+
+async function remove(req, res) {
+  res.send('remove');
+}
+
+module.exports = {
+  getTen,
+  getById,
+  create,
+  update,
+  remove,
+};
 

@@ -1,9 +1,30 @@
-const express = require('express');
-const router = express.Router();
+const { models } = require('../sequelize');
 
+async function getTen(req, res) {
+	const distributors = await models.distributor.findAll({ raw: true});
+	res.status(200).json(distributors.slice(0, 10));
+};
 
-router.get('/', function(req, res, next) {
-  res.send('Distributors info');
-});
+async function getById(req, res) {
+  res.send('getById');
+}
 
-module.exports = router;
+async function create(req, res) {
+  res.send('create');
+}
+
+async function update(req, res) {
+  res.send('update');
+}
+
+async function remove(req, res) {
+  res.send('remove');
+}
+
+module.exports = {
+  getTen,
+  getById,
+  create,
+  update,
+  remove,
+};
