@@ -22,9 +22,18 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-/*app.use('/distributors', distributorsRouter);
-app.use('/films', filmsRouter);
-*/
+app.get('/films', filmsRouter.getTen);
+app.post('/films', filmsRouter.create);
+app.get('/films/:id', filmsRouter.getById);
+app.put('/films/:id', filmsRouter.update);
+app.delete('/films/:id', filmsRouter.remove);
+
+app.get('/distributors', distributorsRouter.getTen);
+app.post('/distributors', distributorsRouter.create);
+app.get('/distributors/:id', distributorsRouter.getById);
+app.put('/distributors/:id', distributorsRouter.update);
+app.delete('/distributors/:id', distributorsRouter.remove);
+
 
 // We create a wrapper to workaround async errors not being transmitted correctly.
 function makeHandlerAwareOfAsyncErrors(handler) {
@@ -37,37 +46,5 @@ function makeHandlerAwareOfAsyncErrors(handler) {
 	};
 }
 
-for (const [routeName, routeController] of Object.entries(routes)) {
-	if (routeController.getTen) {
-		app.get(
-			`/${routeName}`,
-			makeHandlerAwareOfAsyncErrors(routeController.getTen)
-		);
-	}
-	if (routeController.getById) {
-		app.get(
-			`/${routeName}/:id`,
-			makeHandlerAwareOfAsyncErrors(routeController.getById)
-		);
-	}
-	if (routeController.create) {
-		app.post(
-			`/${routeName}`,
-			makeHandlerAwareOfAsyncErrors(routeController.create)
-		);
-	}
-	if (routeController.update) {
-		app.put(
-			`/${routeName}/:id`,
-			makeHandlerAwareOfAsyncErrors(routeController.update)
-		);
-	}
-	if (routeController.remove) {
-		app.delete(
-			`/${routeName}/:id`,
-			makeHandlerAwareOfAsyncErrors(routeController.remove)
-		);
-	}
-}
 
 module.exports = app;
