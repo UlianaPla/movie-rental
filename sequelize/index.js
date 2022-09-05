@@ -4,8 +4,8 @@ const { applyExtraSetup } = require('./extra-setup');
 const sequelize = new Sequelize('postgres://ulia_4d91:pa55w0rd@localhost:5432/movie_rental');
 
 const modelDefiners = [
-	require('./models/distributor.model'),
-	require('./models/film.model'),
+	require('../models/distributor'),
+	require('../models/film'),
 ];
 
 // We define all models according to their files.
