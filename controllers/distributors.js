@@ -1,9 +1,10 @@
 const { models } = require('../sequelize');
 
 async function getAll(req, res, next) {
-  const distributors = await models.distributor.findAll();
+  // offset, limit, etc - should come from query params 
+  const distributors = await models.distributor.findAll(); // add offset/limit logic here and fetch only required number of records
 
-  res.status(200).json(distributors.slice(0, 10));
+  res.status(200).json(distributors.slice(0, 10)); // bad idea, in case of huge table will be a bottleneck
 };
 
 async function getById(req, res) {
