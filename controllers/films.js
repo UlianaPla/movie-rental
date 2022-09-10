@@ -1,19 +1,23 @@
 const { models } = require('../sequelize');
 
 async function getAll(req, res) {
-  const films = await models.film.findAll({ raw: true });
+  const films = await models.film.findAll({
+    offset: `${req.query.offset}`,
+    limit: `${req.query.limit}`
+  }
+  );
 
-  res.status(200).json(films.slice(0, 10)); // same as for distributors
+  res.status(200).json(films);
 };
 
 async function getById(req, res) {
   const id = getIdFromParams(req.params);
-  const filmById = await models.film.findOne({ raw: true, where: { did: `${id}` } }); // 2 things here: did is not a PK, and is not a string. Also why `${}`?
+  const film = await models.film.findOne({ raw: true, where: { did: `${id}` } }); // 2 things here: did is not a PK, and is not a string. Also why `${}`?
 
-  if (filmById == null) // null is falsy value by itself
-    res.status(200).send(`There is no film with id ${id}`); // if not found status 404
+  if (film)
+    res.status(200).json(film);
   else
-    res.status(200).json(filmById); // call variable filmById just a film
+    res.status(404).send(`There is no film with id ${id}`);
 }
 
 async function create(req, res) {
