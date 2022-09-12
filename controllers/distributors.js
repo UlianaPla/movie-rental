@@ -2,15 +2,30 @@ const { models } = require('../sequelize');
 
 async function getAll(req, res, next) {
   const distributors = await models.distributor.findAll({
-    offset:`${req.query.offset}`,
-     limit:`${req.query.limit}`}
-     );
+    offset: req.query.offset,
+    limit: req.query.limit
+  }
+  );
 
-  res.status(200).json(distributors); 
+  res.status(200).json(distributors);
 };
 
 async function getById(req, res) {
-  res.send('getById');
+  const id = req.params.id;
+  const parsed = parseInt(id);
+
+  if (isNaN(parsed)) {
+    res.status(400).send(`Invalid input ${id}`);
+    return;
+  }
+
+  const distributor = await models.distributor.findOne({ raw: true, where: { did: parsed } });
+
+  if (distributor)
+    res.status(200).json(distributor);
+  else
+    res.status(404).send(`There is no film with id ${id}`);
+
 }
 
 async function create(req, res) {
