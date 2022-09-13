@@ -12,7 +12,9 @@ async function getAll(req, res) {
 
 async function getById(req, res) {
   console.log('films get by id');
-  const film = await models.film.findOne({ raw: true, where: { code: req.params.id } });
+  const film = await models.film
+    .findOne({ raw: true, where: { code: req.params.id } })
+    .catch((error) => { res.status(400).send(error); });;
 
   if (film)
     res.status(200).json(film);

@@ -14,18 +14,19 @@ async function getById(req, res) {
   const id = req.params.id;
   const parsed = parseInt(id);
 
-  if (isNaN(parsed)) {
+  /*if (isNaN(parsed)) {
     res.status(400).send(`Invalid input ${id}`);
     return;
-  }
+  }*/
 
-  const distributor = await models.distributor.findOne({ raw: true, where: { did: parsed } });
+  const distributor = await models.distributor
+    .findOne({ raw: true, where: { did: parsed } })
+    .catch((error) => { res.status(400).send(error); });
 
   if (distributor)
     res.status(200).json(distributor);
   else
-    res.status(404).send(`There is no film with id ${id}`);
-
+    res.status(404).send(`There is no film with id ${parsed}`);
 }
 
 async function create(req, res) {
